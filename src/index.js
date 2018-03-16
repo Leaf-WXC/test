@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component,createContext } from 'react';
 import ReactDOM from 'react-dom';
+
+const WhoContext = React.createContext({who:'world'})
 
 class Greeting extends Component {
 
@@ -8,15 +10,17 @@ class Greeting extends Component {
     who:this.props.defaultWho?this.props.defaultWho:''
   }
 
-
   switchName=()=>{
- 
+
     if (this.state.who==='world')
       this.setState((prevState,props)=>({who:'react'}))
     else
       this.setState((prevState,props)=>({who:'world'}))
   }
 
+
+  //<button>是html标记，一个按钮，视作一个组件
+  //onClick={...},onClick是一个属性，指定当我们点击该按钮得时候，要执行哪个事件函数，这里是我们定义得switchName
 
 
   render() {
@@ -35,11 +39,10 @@ class GreetingInput extends Component {
   constructor(props,context) {
     super(props,context); 
 
+
     this.state = {
       who:this.props.defaultWho?this.props.defaultWho:''
     };
-
-
 
     this.handleChange = this.handleChange.bind(this);
     
@@ -48,7 +51,6 @@ class GreetingInput extends Component {
 
   handleChange(event) {
 
-  
     console.log('this指针是:',this)
     this.setState({who: event.target.value});
   }
@@ -73,12 +75,16 @@ class GreetingInput extends Component {
 }
 
 const App=(props,context)=>{
- 
+
   return (
-    <div>
-      <Greeting defaultWho={props.defaultWho} />
+    <WhoContext.Provider value={{who:'worldFromContext'}}>
+      <WhoContext.Consumer>
+        {
+          (context)=><Greeting defaultWho={context.who} />
+        }
+      </WhoContext.Consumer>
       <GreetingInput defaultWho={props.defaultWho}/>
-    </div>
+    </WhoContext.Provider>
   )
 }
 
