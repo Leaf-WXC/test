@@ -1,0 +1,33 @@
+modules是ES6引入的最重要一个特性。 
+所以以后再写模块，直接按照ES6的modules语法来写，然后用 babel + browserify 来打包就行了。
+modules规范分两部分，一部分是如何导出，一部分是如何导入。
+
+1.命名导出（入）
+可以直接在任何变量或者函数前面加上一个 export 关键字，就可以将它导出。 
+这种写法非常简洁，和平时几乎没有区别，唯一的区别就是在需要导出的地方加上一个 export 关键字。 
+这种写法可以只针对模块内的某一属性进行导入。例如：
+导出：
+export const sqrt = Math.sqrt;
+export function square(x) {
+    return x * x;
+}
+export function diag(x, y) {
+    return sqrt(square(x) + square(y));
+}
+导入：
+import { square, diag } from 'lib';
+console.log(square(11)); // 121
+console.log(diag(4, 3));
+
+2.默认导出（入）
+默认导出的时候不需要指定一个变量名，它默认就是文件名。 
+这里的区别不仅仅是不用写名字，而是导出的默认值就是模块本身，而不是模块下面的一个属性，
+即连同整个文件或整个模块包导入，因此导入的文件或包内不用添加export。即是 import myFunc from 'myFunc’; 
+而不是 import {myFunc} from 'myFunc’：
+导入：
+//------ main1.js ------
+import myFunc from 'myFunc';
+myFunc();
+
+3.命名，默认结合导入：
+ import React, { Component } from 'react';
